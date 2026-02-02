@@ -145,17 +145,18 @@ function LeisureMode({ onBackToHome }) {
   const [activeModal, setActiveModal] = useState(null);
   const [discoveredItems, setDiscoveredItems] = useState(new Set());
   const [isGlowing, setIsGlowing] = useState(false);
+  const [glowTrigger, setGlowTrigger] = useState(0);
 
   // Effect to trigger glow when lamp is turned on
-useEffect(() => {
-    if (lampOn) {
+  useEffect(() => {
+    if (lampOn && glowTrigger > 0) {
       setIsGlowing(true);
       const timer = setTimeout(() => {
         setIsGlowing(false);
-      }, 6000); // 6 seconds
+      }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [lampOn]);
+  }, [glowTrigger, lampOn]);
 
 
   const toggleCorkZoom = () => {
@@ -163,7 +164,13 @@ useEffect(() => {
   };
 
   const toggleLamp = () => {
-    setLampOn(!lampOn);
+    const newLampState = !lampOn;
+    setLampOn(newLampState);
+    if (newLampState) {
+      setGlowTrigger(prev => prev + 1); // Trigger glow animation
+    } else {
+      setIsGlowing(false); // Immediately stop glow when turning off
+    }
   };
 
   const openModal = (itemId) => {
