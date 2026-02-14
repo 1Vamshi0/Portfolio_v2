@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import RecruiterMode from './components/RecruiterMode';
 import LeisureMode from './components/LeisureMode';
 import './style.css';
@@ -35,6 +36,7 @@ function App() {
             </button>
           </div>
         </div>
+        <Analytics />
       </div>
     );
   }
@@ -47,6 +49,7 @@ function App() {
       ) : (
         <LeisureMode onBackToHome={handleBackToHome} />
       )}
+      <Analytics />
     </div>
   );
 }
