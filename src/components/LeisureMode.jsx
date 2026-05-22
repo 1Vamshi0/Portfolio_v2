@@ -134,7 +134,7 @@ function LeisureMode({ onBackToHome }) {
   const [isGlowing, setIsGlowing] = useState(false);
   const [glowTrigger, setGlowTrigger] = useState(0);
   
-  // Dynamic scale state to fit any screen size
+  // State for dynamic scaling
   const [scale, setScale] = useState(1);
 
   // Hook to calculate scaling on mount and window resize
@@ -142,10 +142,8 @@ function LeisureMode({ onBackToHome }) {
     const handleResize = () => {
       const widthRatio = window.innerWidth / CONTAINER_WIDTH;
       const heightRatio = window.innerHeight / CONTAINER_HEIGHT;
-      // Use Math.min to ensure it fits entirely in the viewport without clipping
-      // Cap at 1 so the container doesn't stretch and get blurry on large monitors
-      const newScale = Math.min(widthRatio, heightRatio, 1);
-      setScale(newScale);
+      // Fit perfectly within the screen, capped at 1x scale
+      setScale(Math.min(widthRatio, heightRatio, 1));
     };
 
     window.addEventListener('resize', handleResize);
@@ -194,11 +192,19 @@ function LeisureMode({ onBackToHome }) {
 
   return (
     <div className="leisure-mode-wrapper">
+
+      {/* PORTRAIT OVERLAY */}
+      <div className="portrait-overlay">
+        <div className="rotate-icon">📱 ➡️ 📟</div>
+        <h2>Rotate Device</h2>
+        <p>Please turn your phone to landscape mode to explore the desk.</p>
+      </div>
+
       <button className={`back-btn ${corkBoardZoomed ? 'hidden' : ''}`} onClick={onBackToHome}>
         Change Mode
       </button>
 
-      {/* Here is the dynamic scale logic applied directly to the container */}
+      {/* DYNAMICALLY SCALED DESK CONTAINER */}
       <div 
         className="leisure-fixed-container"
         style={{ 

@@ -1175,3 +1175,64 @@ body {
   opacity: 1;
   background-color: #9b593d; /* Shows the handle line, completing the magnifying glass/compass design */
 }
+
+
+/* ==========================================================================
+   PORTRAIT MODE OVERLAY (ENFORCE LANDSCAPE)
+   ========================================================================== */
+
+.portrait-overlay {
+  display: none; /* Hidden by default on desktop and landscape */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--dark-bg);
+  z-index: 100000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+
+.portrait-overlay h2 {
+  color: var(--secondary-color);
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.portrait-overlay p {
+  color: #a0826d;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.rotate-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  animation: tilt-phone 2s infinite ease-in-out;
+}
+
+@keyframes tilt-phone {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* When the screen is vertical (portrait), show the overlay and hide the game */
+@media (max-width: 900px) and (orientation: portrait) {
+  .portrait-overlay {
+    display: flex;
+  }
+  
+  /* Hide the desk, UI buttons, and progress bar so they can't be interacted with */
+  .leisure-fixed-container,
+  .back-btn,
+  .progress-bar {
+    display: none !important;
+  }
+}
