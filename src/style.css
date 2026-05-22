@@ -399,46 +399,102 @@ body {
    RESPONSIVE LAYOUT CONSTRAINTS (MOBILE INTERFACE OVERRIDES)
    ========================================================================== */
 
+/* ==========================================================================
+   RESPONSIVE INTERFACE MATRIX (MOBILE & TOUCH OVERRIDES)
+   ========================================================================== */
+
 @media (max-width: 968px) {
-  .global-hud-bar {
-    height: auto;
-    flex-direction: column;
-    padding: 15px;
-    gap: 10px;
-    text-align: center;
+  /* 1) Hide the custom CSS lens cursor completely on touchscreens */
+  .css-lens-cursor {
+    display: none !important;
   }
-  
-  .hud-left, .hud-right {
-    flex-direction: column;
-    gap: 5px;
+
+  /* 2) Re-allow the native touch pointer behaviors so tapping works flawlessly */
+  .split-view-container,
+  .blueprint-pane,
+  .artifact-pane,
+  .blueprint-action-trigger,
+  .pixel-scroll-large {
+    cursor: pointer !important;
   }
-  
+
+  /* 3) Stack the landing page split vertically (Top half vs Bottom half) */
   .split-view-container {
     flex-direction: column;
-    height: auto;
-    min-height: calc(100vh - 140px);
+    height: calc(100vh - 60px); /* Fill space perfectly underneath the HUD header */
+    overflow-y: hidden;
   }
-  
-  .blueprint-pane:hover, .artifact-pane:hover {
-    flex: 1.5;
+
+  /* 4) Give both panels an equal 50% height share of the screen */
+  .blueprint-pane, 
+  .artifact-pane {
+    width: 100%;
+    height: 50% !important;
+    flex: none !important; /* Disable desktop side-expansion flex transitions */
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.3s ease, background-color 0.3s ease;
   }
-  
-  .side-identity-tag.tech-tag {
-    top: auto;
-    bottom: 30px;
-    right: 30px;
-  }
-  
+
+  /* 5) Scale down the huge typography so it frames nicely on narrow viewports */
   .blueprint-title {
-    font-size: 52px;
+    font-size: 42px;
+    line-height: 0.9;
   }
   
+  .blueprint-title span {
+    padding-left: 15px;
+  }
+
+  .blueprint-description {
+    font-size: 13px;
+    margin-top: 10px;
+    max-width: 100%;
+  }
+
+  .blueprint-action-trigger {
+    margin-top: 15px;
+    padding: 10px 15px;
+  }
+
+  /* 6) Scale down the ancient scroll graphic to fit mobile widths cleanly */
   .pixel-scroll-large {
-    padding: 35px 20px 25px;
+    padding: 25px 20px 20px;
+    min-height: auto;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .scroll-main-title {
+    font-size: 24px;
+  }
+
+  .scroll-heading {
+    font-size: 11px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+
+  .scroll-description {
+    font-size: 12px;
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+
+  .scroll-text {
+    display: none; /* Hide secondary decorative text to prevent scroll overflow on tiny devices */
+  }
+
+  /* 7) Simplified touch-feedback instead of hover expansions */
+  .blueprint-pane:active {
+    background-color: #c8c8c8;
   }
   
-  .scroll-main-title {
-    font-size: 28px;
+  .artifact-pane:active .pixel-scroll-large {
+    transform: scale(0.98);
   }
 }
 
@@ -1126,12 +1182,12 @@ body {
 /* STATE 2: Hovering over the Leisure Artifact Scroll Panel */
 .css-lens-cursor.artifact {
   opacity: 1;
-  border: 2px solid #2b1810; /* Dark parchment tone matching scroll borders */
-  background-color: rgba(230, 204, 178, 0.2); /* Injected vintage magnifying lens glass tint */
+  border: 2px solid #e74e0c; /* Dark parchment tone matching scroll borders */
+  background-color: rgba(255, 128, 0, 0.2); /* Injected vintage magnifying lens glass tint */
   transform: translate(-50%, -50%) scale(1.15); /* Expands slightly to mimic a magnifying glass */
 }
 .css-lens-cursor.artifact .lens-center-dot {
-  background-color: #dd4d1086;
+  background-color: #3a1505;
 }
 .css-lens-cursor.artifact .lens-compass-handle {
   opacity: 1;
