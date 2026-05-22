@@ -133,10 +133,19 @@ function LeisureMode({ onBackToHome }) {
   const [discoveredItems, setDiscoveredItems] = useState(new Set());
   const [isGlowing, setIsGlowing] = useState(false);
   const [glowTrigger, setGlowTrigger] = useState(0);
-  
-  // State for dynamic aspect-ratio scaling
   const [scale, setScale] = useState(1);
   const wrapperRef = useRef(null);
+
+  // State to manage the onboarding interaction hint pop-up
+  const [showHint, setShowHint] = useState(true);
+
+  // Auto-hide the interaction hint after 4.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(false);
+    }, 4500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const calculateScale = () => {
@@ -155,7 +164,7 @@ function LeisureMode({ onBackToHome }) {
 
     window.addEventListener('resize', calculateScale);
     // Tiny delay ensures React has painted the wrapper before measuring
-    setTimeout(calculateScale, 10); 
+    setTimeout(calculateScale, 10);
 
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
@@ -203,8 +212,18 @@ function LeisureMode({ onBackToHome }) {
 
       {/* PORTRAIT OVERLAY */}
       <div className="portrait-overlay">
+        <div className="rotate-icon">📱 ➡️ 📟</div>
         <h2>Rotate Device</h2>
         <p>Please turn your phone to landscape mode to explore the desk.</p>
+      </div>
+
+      {/* Interactive Toast Notification Pop-up */}
+      <div className={`interaction-toast ${showHint ? 'visible' : 'hidden'}`}>
+        <span className="toast-icon">🔍</span>
+        <div className="toast-text">
+          <h4>Leisure Mode Active</h4>
+          <p>Interact with the objects on the desk to discover information.</p>
+        </div>
       </div>
 
       <button className={`back-btn ${corkBoardZoomed ? 'hidden' : ''}`} onClick={onBackToHome}>

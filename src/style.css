@@ -1272,3 +1272,87 @@ body {
     text-align: left;
   }
 }
+
+
+/* ==========================================================================
+   INTERACTION HINT POP-UP (TOAST)
+   ========================================================================== */
+
+.interaction-toast {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: rgba(26, 26, 26, 0.95);
+  border: 2px solid var(--primary-color, #8b7355);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 99999; /* Higher than background but below full modals */
+  pointer-events: none; /* Allows clicks to pass through if a user taps it */
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              opacity 0.4s ease;
+  backdrop-filter: blur(5px);
+  width: max-content;
+  max-width: 90vw;
+}
+
+/* Slide down and become visible */
+.interaction-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Smooth fade out when hidden */
+.interaction-toast.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px);
+  display: flex !important; /* Overrides global .hidden display:none to let transition finish */
+}
+
+.toast-icon {
+  font-size: 24px;
+  animation: toast-pulse 1.5s infinite ease-in-out;
+}
+
+.toast-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.toast-text h4 {
+  font-family: 'Courier New', monospace;
+  color: var(--secondary-color, #f4e4c1);
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toast-text p {
+  font-family: 'Courier New', monospace;
+  color: #a0826d;
+  margin: 0;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+@keyframes toast-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Mobile landscape layout handling to keep it clear of buttons */
+@media (max-width: 900px) {
+  .interaction-toast {
+    top: 15px;
+    padding: 10px 15px;
+  }
+  .toast-text h4 { font-size: 12px; }
+  .toast-text p { font-size: 11px; }
+}
