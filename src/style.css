@@ -693,7 +693,7 @@ body {
 .leisure-mode-wrapper {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* Hide any overflow from the scaling */
   position: relative;
   background: #1a1510;
   display: flex;
@@ -1209,18 +1209,6 @@ body {
   font-family: 'Courier New', monospace;
   font-size: 16px;
   line-height: 1.5;
-}
-
-.rotate-icon {
-  font-size: 50px;
-  margin-bottom: 20px;
-  animation: tilt-phone 2s infinite ease-in-out;
-}
-
-@keyframes tilt-phone {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(-90deg); }
-  100% { transform: rotate(0deg); }
 }
 
 /* When the screen is vertical (portrait), show the overlay and hide the game */

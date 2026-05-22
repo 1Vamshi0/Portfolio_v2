@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 
-function ProgressBar({ discovered, total, discoveredItems, isHidden }) {
+function ProgressBar({ discovered, discoveredItems, isHidden }) {
   const [showChecklist, setShowChecklist] = useState(false);
 
+  // Updated to exactly match the 11 modal types from LeisureMode.jsx
   const allItems = [
-    { id: 'about', name: 'About Me',icon: '🖼️' },
-    { id: 'resume', name: 'Resume Document', icon: '📰' },
-    { id: 'skills', name: 'Skills', icon: '📚' },
-    { id: 'contact', name: 'Contact', icon: '✉️' },
-    { id: 'projects', name: 'Projects', icon: '💻' },
-    { id: 'hobby', name: 'Hobbies', icon: '🖌️' },
-    { id: 'timeline', name: 'Timeline', icon: '🚎' }
+    { id: 'about', name: 'Wanted Poster (About)', icon: '🎯' },
+    { id: 'resume', name: 'Resume', icon: '📄' },
+    { id: 'timeline', name: 'Timeline', icon: '📸' },
+    { id: 'hobby', name: 'Books (Hobbies)', icon: '📚' },
+    { id: 'contact', name: 'Phone (Contact)', icon: '📱' },
+    { id: 'projects', name: 'Laptop (Projects)', icon: '💻' },
+    { id: 'globe', name: 'Globe', icon: '🌍' },
+    { id: 'coffeeMug', name: 'Coffee Mug', icon: '☕' },
+    { id: 'hourglass', name: 'Hourglass', icon: '⏳' },
+    { id: 'potat', name: 'Potato', icon: '🥔' },
+    { id: 'smoke', name: 'Smoke', icon: '💨' }
   ];
+
+  // Dynamically use the length of the array so it's always perfectly accurate
+  const accurateTotal = allItems.length;
 
   // Calculate circle progress
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
-  const progress = (discovered / total) * 100;
+  const progress = (discovered / accurateTotal) * 100;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
@@ -48,7 +56,7 @@ function ProgressBar({ discovered, total, discoveredItems, isHidden }) {
             className="checklist-button"
             onClick={() => setShowChecklist(!showChecklist)}
           >
-            <span className="progress-text">{discovered}/{total}</span>
+            <span className="progress-text">{discovered}/{accurateTotal}</span>
             <span className="progress-label">Items</span>
           </button>
         </div>
@@ -75,7 +83,7 @@ function ProgressBar({ discovered, total, discoveredItems, isHidden }) {
               ))}
             </div>
             <div className="checklist-footer">
-              <p>{discovered} of {total} discovered</p>
+              <p>{discovered} of {accurateTotal} discovered</p>
             </div>
           </div>
         </div>

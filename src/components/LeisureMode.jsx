@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import InfoCard from './InfoCard';
 import ProgressBar from './ProgressBar';
 
@@ -134,22 +134,30 @@ function LeisureMode({ onBackToHome }) {
   const [isGlowing, setIsGlowing] = useState(false);
   const [glowTrigger, setGlowTrigger] = useState(0);
   
-  // State for dynamic scaling
+  // State for dynamic aspect-ratio scaling
   const [scale, setScale] = useState(1);
+  const wrapperRef = useRef(null);
 
-  // Hook to calculate scaling on mount and window resize
   useEffect(() => {
-    const handleResize = () => {
-      const widthRatio = window.innerWidth / CONTAINER_WIDTH;
-      const heightRatio = window.innerHeight / CONTAINER_HEIGHT;
-      // Fit perfectly within the screen, capped at 1x scale
-      setScale(Math.min(widthRatio, heightRatio, 1));
+    const calculateScale = () => {
+      if (!wrapperRef.current) return;
+      
+      const wrapperWidth = wrapperRef.current.clientWidth;
+      const wrapperHeight = wrapperRef.current.clientHeight;
+
+      const scaleX = wrapperWidth / CONTAINER_WIDTH;
+      const scaleY = wrapperHeight / CONTAINER_HEIGHT;
+
+      // Ensure the whole 1264x632 block fits without clipping
+      const newScale = Math.min(scaleX, scaleY);
+      setScale(newScale);
     };
 
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Trigger immediately on load
+    window.addEventListener('resize', calculateScale);
+    // Tiny delay ensures React has painted the wrapper before measuring
+    setTimeout(calculateScale, 10); 
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
   useEffect(() => {
@@ -191,11 +199,10 @@ function LeisureMode({ onBackToHome }) {
   });
 
   return (
-    <div className="leisure-mode-wrapper">
+    <div className="leisure-mode-wrapper" ref={wrapperRef}>
 
       {/* PORTRAIT OVERLAY */}
       <div className="portrait-overlay">
-        <div className="rotate-icon">📱 ➡️ 📟</div>
         <h2>Rotate Device</h2>
         <p>Please turn your phone to landscape mode to explore the desk.</p>
       </div>
@@ -204,12 +211,14 @@ function LeisureMode({ onBackToHome }) {
         Change Mode
       </button>
 
-      {/* DYNAMICALLY SCALED DESK CONTAINER */}
       <div 
         className="leisure-fixed-container"
         style={{ 
+          width: `${CONTAINER_WIDTH}px`,
+          height: `${CONTAINER_HEIGHT}px`,
           transform: `scale(${scale})`,
-          transformOrigin: 'center center' 
+          transformOrigin: 'center center',
+          position: 'absolute'
         }}
       >
         <div className="leisure-content">
