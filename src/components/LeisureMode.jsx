@@ -133,6 +133,26 @@ function LeisureMode({ onBackToHome }) {
   const [discoveredItems, setDiscoveredItems] = useState(new Set());
   const [isGlowing, setIsGlowing] = useState(false);
   const [glowTrigger, setGlowTrigger] = useState(0);
+  
+  // Dynamic scale state to fit any screen size
+  const [scale, setScale] = useState(1);
+
+  // Hook to calculate scaling on mount and window resize
+  useEffect(() => {
+    const handleResize = () => {
+      const widthRatio = window.innerWidth / CONTAINER_WIDTH;
+      const heightRatio = window.innerHeight / CONTAINER_HEIGHT;
+      // Use Math.min to ensure it fits entirely in the viewport without clipping
+      // Cap at 1 so the container doesn't stretch and get blurry on large monitors
+      const newScale = Math.min(widthRatio, heightRatio, 1);
+      setScale(newScale);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Trigger immediately on load
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (lampOn && glowTrigger > 0) {
@@ -178,7 +198,14 @@ function LeisureMode({ onBackToHome }) {
         Change Mode
       </button>
 
-      <div className="leisure-fixed-container">
+      {/* Here is the dynamic scale logic applied directly to the container */}
+      <div 
+        className="leisure-fixed-container"
+        style={{ 
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center' 
+        }}
+      >
         <div className="leisure-content">
           
           {/* ZOOMED OUT VIEW */}

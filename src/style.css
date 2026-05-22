@@ -716,25 +716,7 @@ body {
   overflow: hidden;
 }
 
-/* Fixed container scale-adjust queries */
-@media (max-width: 1264px) {
-  .leisure-fixed-container {
-    transform: scale(calc(100vw / 1264));
-    transform-origin: center center;
-  }
-}
-@media (max-height: 632px) and (min-width: 1264px) {
-  .leisure-fixed-container {
-    transform: scale(calc(100vh / 632));
-    transform-origin: center center;
-  }
-}
-@media (max-width: 1264px) and (max-height: 632px) {
-  .leisure-fixed-container {
-    transform: scale(min(calc(100vw / 1264), calc(100vh / 632)));
-    transform-origin: center center;
-  }
-}
+
 
 .normal-view {
   width: 100%;
