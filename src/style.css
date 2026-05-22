@@ -1,4 +1,4 @@
-/* ===== GLOBAL STYLES ===== */
+/* ===== GLOBAL RESET & VARIABLES ===== */
 
 * {
   margin: 0;
@@ -7,7 +7,6 @@
 }
 
 :root {
-  /* Color Variables */
   --primary-color: #8b7355;
   --secondary-color: #f4e4c1;
   --dark-bg: #1a1a1a;
@@ -16,13 +15,11 @@
   --text-dark: #1a1a1a;
   --glow-color: rgba(255, 220, 100, 0.6);
   
-  /* Element Size Variables */
   --element-font-size: 18px;
   --element-padding: 15px 25px;
   --cork-element-font-size: 20px;
   --cork-element-padding: 20px 30px;
   
-  /* Hover & Animation Variables */
   --element-hover-scale: 1.1;
   --cork-hover-scale: 1.07;
   --transition-speed: 0.3s;
@@ -40,86 +37,415 @@ body {
   min-height: 100vh;
 }
 
-/* ===== UTILITY CLASSES ===== */
-
 .hidden {
   display: none !important;
 }
 
-/* ===== LANDING PAGE ===== */
+
+/* ==========================================================================
+   THE PARADOX LANDING PAGE CORE
+   ========================================================================== */
 
 .landing-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background: #111;
+  user-select: none;
+}
+
+/* Base Pane Configuration */
+.blueprint-pane, .artifact-pane {
+  position: relative;
+  flex: 1;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-}
-
-.landing-container {
-  text-align: center;
-  padding: 40px;
-}
-
-.landing-container h1 {
-  font-size: 56px;
-  color: var(--secondary-color);
-  margin-bottom: 20px;
-  text-shadow: 0 0 20px rgba(244, 228, 193, 0.3);
-}
-
-.landing-container p {
-  font-size: 24px;
-  color: var(--text-light);
-  margin-bottom: 50px;
-}
-
-.landing-buttons {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.landing-btn {
-  font-size: 24px;
+  transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
   cursor: pointer;
+  padding: 60px;
+  z-index: 5;
+}
+
+
+/* ===== HORIZONTAL HUD LAYOUT PATTERN ===== */
+
+.landing-page.horizontal-hud-layout {
+  flex-direction: column; /* Stack header above the content */
+  background: #111;
+}
+
+/* ==========================================================================
+   GLOBAL TOP HUD BAR (NEW MOUSE RESTING ZONE)
+   ========================================================================== */
+.global-hud-bar {
+  width: 100%;
+  height: 60px;
+  background-color: #1a1a1a;
+  border-bottom: 2px solid #2d2d2d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* HUD Left: Identity Components */
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hud-name {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 900;
+  color: #dcdcdc;
+  letter-spacing: 1px;
+}
+
+.hud-status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #e64a19; /* Accent color matching the blueprint triggers */
+  border-radius: 50%;
+  box-shadow: 0 0 8px #e64a19;
+}
+
+.hud-id {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+}
+
+/* HUD Center: System Balance Metrics */
+.hud-center {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #888;
+}
+
+/* HUD Right: Data Streams */
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hud-coordinate {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 1px;
+  display: inline-block;
+  min-width: 150px; /* Reserves uniform horizontal block workspace */
+  text-align: right;
+}
+
+.hud-ticker {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  background: #2b2b2b;
+  color: #dcdcdc;
+  padding: 4px 12px;
+  border: 1px solid #444;
+  display: inline-block;
+  min-width: 115px; 
+  text-align: center;
+}
+
+/* ==========================================================================
+   SPLIT CONTAINER MATRIX
+   ========================================================================== */
+.split-view-container {
+  width: 100%;
+  height: calc(100vh - 60px); /* Fill space perfectly underneath top bar */
+  display: flex;
+  position: relative;
+}
+
+
+/* ==========================================================================
+   LEFT HALF: SYSTEM BLUEPRINT PANEL SPECIFICS
+   ========================================================================== */
+.blueprint-pane {
+  background-color: #dcdcdc;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: #222;
+  overflow: hidden;
+}
+
+.side-identity-tag.tech-tag {
+  position: absolute;
+  top: 40px;
+  right: 180px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 1px solid #222;
+  padding: 3px 8px;
+  background-color: transparent;
+  color: #222;
+  opacity: 0.8;
+}
+
+/* Sharp UI Framing Ticks */
+.corner-tick {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #222;
+}
+.top-left { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+.bottom-left { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+
+/* Blueprint Content Layout */
+.blueprint-content {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.tech-meta-tag {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.blueprint-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.blueprint-title span {
+  padding-left: 30px;
+  color: #333;
+}
+
+.blueprint-description {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+  margin-top: 20px;
+  max-width: 420px;
+  font-weight: bold;
+}
+
+
+/* ==========================================================================
+   RIGHT HALF: LEISURE MODE (ANCIENT ARTIFACT SCROLL)
+   ========================================================================== */
+.artifact-pane {
+  background-color: #14110f;
+  color: #dfd5c6;
+}
+
+.artifact-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Expanded Pixel Scroll Mechanics */
+.pixel-scroll-large {
+  width: 100%;
+  max-width: 620px;
+  min-height: 340px;
+  background-color: #e6ccb2;
+  border: 5px solid #2b1810;
+  box-shadow: 0 20px 0 rgba(0, 0, 0, 0.5);
+  padding: 45px 40px 35px;
+  position: relative;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.scroll-banner {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #b07d62;
+  color: #f5ebe0;
   font-family: 'Courier New', monospace;
   font-weight: bold;
-  transition: all var(--transition-speed) ease;
+  font-size: 15px;
+  padding: 6px 20px;
+  border: 3px solid #2b1810;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  min-width: 250px;
+  letter-spacing: 1px;
 }
 
-.leisure-btn {
-  padding: 20px 60px;
-  background: linear-gradient(135deg, #8b7355 0%, #a0826d 100%);
-  color: var(--secondary-color);
-  border: 3px solid var(--primary-color);
-  border-radius: 8px;
+.scroll-body {
+  color: #4a3b32;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
-.leisure-btn:hover {
-  background: linear-gradient(135deg, #a0826d 0%, #b8956a 100%);
-  box-shadow: 0 0 25px rgba(139, 115, 85, 0.8);
-  transform: translateY(-3px);
+.scroll-main-title {
+  font-family: 'Courier New', monospace;
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #2b1810;
+  margin-bottom: 5px;
 }
 
-.recruiter-btn {
-  padding: 20px 40px;
-  background: linear-gradient(135deg, #4a5f7f 0%, #5a7f9f 100%);
-  color: var(--secondary-color);
-  border: 3px solid #4a5f7f;
-  border-radius: 8px;
+.scroll-heading {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  border-bottom: 3px dashed #9c8979;
+  padding-bottom: 12px;
+  color: #7f5539;
 }
 
-.recruiter-btn:hover {
-  background: linear-gradient(135deg, #5a7f9f 0%, #6a8fbf 100%);
-  box-shadow: 0 0 25px rgba(74, 95, 127, 0.8);
-  transform: translateY(-3px);
+.scroll-description {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #2b1810;
+  background-color: rgba(43, 24, 16, 0.06);
+  padding: 12px;
+  border: 1px dashed #2b1810;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
-/* ===== BACK BUTTONS ===== */
+.scroll-text {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 25px;
+  color: #5c4d42;
+}
+
+.scroll-footer {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  color: #2b1810;
+  background-color: rgba(181, 131, 141, 0.15);
+  padding: 8px;
+  border: 2px dotted #2b1810;
+  animation: scroll-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(0.99); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+
+/* ==========================================================================
+   DYNAMIC INTERACTIVE ENGAGEMENT ADJUSTMENTS
+   ========================================================================== */
+
+/* Panel Elastic Resizing */
+.blueprint-pane:hover {
+  flex: 1.4;
+}
+
+.artifact-pane:hover {
+  flex: 1.4;
+}
+.artifact-pane:hover .pixel-scroll-large {
+  transform: translateY(-12px);
+  box-shadow: 0 32px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Cross-fading pane lighting behaviors */
+.split-view-container:has(.blueprint-pane:hover) .artifact-pane {
+  filter: brightness(0.35) grayscale(0.3);
+}
+
+.split-view-container:has(.artifact-pane:hover) .blueprint-pane {
+  filter: brightness(0.45) contrast(0.9);
+}
+
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT CONSTRAINTS (MOBILE INTERFACE OVERRIDES)
+   ========================================================================== */
+
+@media (max-width: 968px) {
+  .global-hud-bar {
+    height: auto;
+    flex-direction: column;
+    padding: 15px;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .hud-left, .hud-right {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .split-view-container {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 140px);
+  }
+  
+  .blueprint-pane:hover, .artifact-pane:hover {
+    flex: 1.5;
+  }
+  
+  .side-identity-tag.tech-tag {
+    top: auto;
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .blueprint-title {
+    font-size: 52px;
+  }
+  
+  .pixel-scroll-large {
+    padding: 35px 20px 25px;
+  }
+  
+  .scroll-main-title {
+    font-size: 28px;
+  }
+}
+
+
+/* ==========================================================================
+   BACK BUTTONS & APPLICATION INTERIORS (RETAINED CONTEXT)
+   ========================================================================== */
 
 .back-btn {
   position: fixed;
@@ -133,7 +459,7 @@ body {
   cursor: pointer;
   font-family: 'Courier New', monospace;
   font-size: 16px;
-  z-index: 9999; /* Above the scaled container */
+  z-index: 9999;
   width: 230px;
   transition: all var(--transition-speed) ease;
 }
@@ -166,7 +492,7 @@ body {
   box-shadow: 0 0 15px var(--glow-color);
 }
 
-/* ===== RECRUITER MODE ===== */
+/* ===== RECRUITER MODE PROFILE VIEW ===== */
 
 .Header-v2 {
   position: absolute;
@@ -212,8 +538,7 @@ body {
   margin-bottom: 50px;
 }
 
-.btn-primary,
-.btn-secondary {
+.btn-primary, .btn-secondary {
   padding: 12px 30px;
   border-radius: 4px;
   text-decoration: none;
@@ -232,8 +557,7 @@ body {
   border: 2px solid var(--primary-color);
 }
 
-.btn-primary:hover,
-.btn-secondary:hover {
+.btn-primary:hover, .btn-secondary:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 20px rgba(139, 115, 85, 0.4);
 }
@@ -307,42 +631,26 @@ body {
   line-height: 1.5;
 }
 
-/* ===== LEISURE MODE - FIXED CONTAINER WITH LETTERBOXING ===== */
 
-/* Wrapper - Creates letterboxing/pillarboxing effect */
+/* ===== LEISURE MODE - INTERIOR CANVAS WORK ===== */
+
 .leisure-mode-wrapper {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
-  
-  /* Letterbox bars - customize this color */
-  background: #1a1510; /* Warm brown to match desk theme */
-  /* Alternative options:
-     background: #000;  Black bars
-     background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);  Gradient
-  */
-  
+  background: #1a1510;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Fixed-size container - exact dimensions from your design */
 .leisure-fixed-container {
   width: 1264px;
   height: 632px;
   position: relative;
   background: var(--dark-bg);
-  
-  /* Subtle shadow to distinguish from letterboxing */
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-  
-  /* Optional: Add a frame effect - uncomment to enable */
-  /* border: 8px solid #8b7355; */
-  /* box-shadow: 
-    0 0 50px rgba(0, 0, 0, 0.8),
-    inset 0 0 20px rgba(139, 115, 85, 0.3); */
 }
 
 .leisure-content {
@@ -352,46 +660,25 @@ body {
   overflow: hidden;
 }
 
-/* ===== RESPONSIVE SCALING FOR FIXED CONTAINER ===== */
-
-/* When screen is narrower than 1264px */
+/* Fixed container scale-adjust queries */
 @media (max-width: 1264px) {
   .leisure-fixed-container {
     transform: scale(calc(100vw / 1264));
     transform-origin: center center;
   }
 }
-
-/* When screen is shorter than 632px (but wider than 1264px) */
 @media (max-height: 632px) and (min-width: 1264px) {
   .leisure-fixed-container {
     transform: scale(calc(100vh / 632));
     transform-origin: center center;
   }
 }
-
-/* When both width and height are smaller - use the smaller scale ratio */
 @media (max-width: 1264px) and (max-height: 632px) {
   .leisure-fixed-container {
     transform: scale(min(calc(100vw / 1264), calc(100vh / 632)));
     transform-origin: center center;
   }
 }
-
-/* Optional: Scale up on very large screens - uncomment if desired */
-/*
-@media (min-width: 1920px) and (min-height: 1080px) {
-  .leisure-fixed-container {
-    transform: scale(1.2);
-  }
-}
-
-@media (min-width: 2560px) and (min-height: 1440px) {
-  .leisure-fixed-container {
-    transform: scale(1.5);
-  }
-}
-*/
 
 .normal-view {
   width: 100%;
@@ -415,8 +702,6 @@ body {
   object-fit: cover;
   object-position: center 45%;
 }
-
-/* ===== CORK BOARD ZONE & GLOW ===== */
 
 .cork-board-zone {
   position: absolute;
@@ -449,15 +734,9 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-  }
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }
-
-/* ===== DESK ELEMENTS ===== */
 
 .element {
   position: absolute;
@@ -480,38 +759,19 @@ body {
   z-index: 15;
 }
 
-/* Glow effect when lamp is on */
 .element.glowing {
   animation: elementGlow 5s ease-out;
 }
 
 @keyframes elementGlow {
-  0% {
-    filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0));
-  }
-  20% {
-    filter: drop-shadow(0 0 15px rgb(212, 182, 84));
-  }
-  100% {
-    filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0));
-  }
+  0% { filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0)); }
+  20% { filter: drop-shadow(0 0 15px rgb(212, 182, 84)); }
+  100% { filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0)); }
 }
 
-
-.lamp {
-  z-index: 12;
-}
-
-.lamp img {
-  filter: drop-shadow(0 0 15px rgba(255, 220, 100, 0.3));
-}
-
-.lamp.on img {
-  filter: drop-shadow(0 0 30px rgba(255, 220, 100, 0.8));
-}
-
-
-/* ===== ZOOMED VIEW (CORK BOARD) ===== */
+.lamp { z-index: 12; }
+.lamp img { filter: drop-shadow(0 0 15px rgba(255, 220, 100, 0.3)); }
+.lamp.on img { filter: drop-shadow(0 0 30px rgba(255, 220, 100, 0.8)); }
 
 .zoomed-view {
   width: 100%;
@@ -521,16 +781,9 @@ body {
 }
 
 @keyframes zoom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
-
 
 .cork-background-detailed {
   width: 100%;
@@ -538,20 +791,8 @@ body {
   display: flex;
   justify-content: center;
   background: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
-    ),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
     radial-gradient(ellipse at center, #C98C55 0%, #906f43 100%);
 }
 
@@ -584,10 +825,6 @@ body {
   box-shadow: 0 0 20px var(--glow-color);
 }
 
-/* ===== CORK BOARD ELEMENTS ===== */
-
-
-
 .cork-element {
   position: absolute;
   cursor: pointer;
@@ -609,21 +846,14 @@ body {
   z-index: 15;
 }
 
-/* Glow effect for cork elements when lamp is on */
 .cork-element.glowing {
   animation: corkGlow 5s ease-out;
 }
 
 @keyframes corkGlow {
-  0% {
-    filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0));
-  }
-  20% {
-    filter: drop-shadow(0 0 12px rgba(255, 220, 100, 0.7));
-  }
-  100% {
-    filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0));
-  }
+  0% { filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0)); }
+  20% { filter: drop-shadow(0 0 12px rgba(255, 220, 100, 0.7)); }
+  100% { filter: drop-shadow(0 0 0px rgba(255, 220, 100, 0)); }
 }
 
 .cork-element.glowing:hover {
@@ -632,7 +862,7 @@ body {
 }
 
 
-/* ===== MODALS (RUSTIC THEME) ===== */
+/* ===== INTERIOR PORTFOLIO MODALS ===== */
 
 .modal-overlay {
   position: fixed;
@@ -649,491 +879,105 @@ body {
   backdrop-filter: blur(5px);
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* --- The Rustic Card Container --- */
 .rustic-card {
   position: relative;
   width: 500px;
   max-width: 90%;
   max-height: 85vh;
-  overflow-y: auto; /* Scroll if content is too long */
-  
-  background-color: #fdfbf7; /* Warm cream paper color */
+  overflow-y: auto;
+  background-color: #fdfbf7;
   color: #4a403a;
   padding: 50px 40px;
-  
-  /* Shadow and Linen Texture */
-  box-shadow: 
-      0 20px 50px rgba(0,0,0,0.5), 
-      0 0 0 10px rgba(255,255,255,0.05);
-  
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 10px rgba(255,255,255,0.05);
   background-image: 
       linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
       linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
   background-size: 4px 4px;
-  
   text-align: center;
   animation: slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Smooth scrollbar for the card */
   scrollbar-width: none;
-  scrollbar-color: #c5b8a5 #fdfbf7;
 }
 
-/* Webkit scrollbar styling */
-.rustic-card::-webkit-scrollbar {
-  width: 6px;
-}
-.rustic-card::-webkit-scrollbar-track {
-  background: #fdfbf7;
-}
-.rustic-card::-webkit-scrollbar-thumb {
-  background-color: #c5b8a5;
-  border-radius: 3px;
-}
+.rustic-card::-webkit-scrollbar { width: 6px; }
+.rustic-card::-webkit-scrollbar-track { background: #fdfbf7; }
+.rustic-card::-webkit-scrollbar-thumb { background-color: #c5b8a5; border-radius: 3px; }
 
-@keyframes slide-up {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+@keyframes slide-up { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-/* --- Decorative Double Border --- */
-.rustic-card::before {
-  content: '';
-  position: absolute;
-  top: 12px; left: 12px; right: 12px; bottom: 12px;
-  border: 1px solid #c5b8a5;
-  pointer-events: none;
-}
+.rustic-card::before { content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid #c5b8a5; pointer-events: none; }
+.rustic-card::after { content: ''; position: absolute; top: 16px; left: 16px; right: 16px; bottom: 16px; border: 1px solid #c5b8a5; pointer-events: none; }
 
-.rustic-card::after {
-  content: '';
-  position: absolute;
-  top: 16px; left: 16px; right: 16px; bottom: 16px;
-  border: 1px solid #c5b8a5;
-  pointer-events: none;
-}
+.rustic-close-btn { position: absolute; top: 20px; right: 25px; background: transparent; border: none; font-size: 32px; color: #c5b8a5; cursor: pointer; z-index: 20; transition: color 0.3s, transform 0.3s ease; line-height: 1; }
+.rustic-close-btn:hover { color: #4a403a; transform: rotate(90deg); }
 
-/* --- Typography & Elements --- */
-.rustic-close-btn {
-  position: absolute;
-  top: 20px;
-  right: 25px;
-  background: transparent;
-  border: none;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 32px;
-  color: #c5b8a5;
-  cursor: pointer;
-  z-index: 20;
-  transition: color 0.3s,transform 0.3s ease;
-  line-height: 1;
-}
+.rustic-category { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #8c7b67; margin-bottom: 10px; font-weight: 600; }
+.rustic-title { font-size: 38px; font-weight: 600; margin-bottom: 15px; line-height: 1.1; font-style: italic; color: #4a403a; }
+.rustic-divider { height: 1px; width: 60px; background-color: #4a403a; margin: 20px auto 30px; position: relative; }
+.rustic-divider::after { content: '◆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fdfbf7; padding: 0 8px; font-size: 10px; color: #4a403a; }
 
-.rustic-close-btn:hover {
-  color: #4a403a;
-  transform: rotate(90deg);
-}
+.rustic-body p { font-size: 20px; line-height: 1.6; color: #5e524b; margin-bottom: 15px; }
+.rustic-link { color: #8b7355; text-decoration: none; border-bottom: 1px solid #c5b8a5; transition: all 0.3s ease; }
+.rustic-link:hover { color: #4a403a; border-bottom-color: #4a403a; }
+.rustic-body p strong { color: #4a403a; font-weight: 600; }
 
-.rustic-category {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #8c7b67;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
+.rustic-btn { display: inline-block; margin-top: 20px; padding: 12px 35px; background-color: transparent; border: 1px solid #4a403a; color: #4a403a; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; z-index: 10; }
+.rustic-btn:hover { background-color: #4a403a; color: #fdfbf7; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-.rustic-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 38px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  line-height: 1.1;
-  font-style: italic;
-  color: #4a403a;
-}
-
-.rustic-divider {
-  height: 1px;
-  width: 60px;
-  background-color: #4a403a;
-  margin: 20px auto 30px;
-  position: relative;
-}
-
-.rustic-divider::after {
-  content: '◆';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fdfbf7;
-  padding: 0 8px;
-  font-size: 10px;
-  color: #4a403a;
-}
-
-.rustic-body p {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  line-height: 1.6;
-  color: #5e524b;
-  margin-bottom: 15px;
-}
-/* --- Rustic Links --- */
-.rustic-link {
-  color: #8b7355;
-  text-decoration: none;
-  border-bottom: 1px solid #c5b8a5;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.rustic-link:hover {
-  color: #4a403a;
-  border-bottom-color: #4a403a;
-}
-
-.rustic-body p strong {
-  color: #4a403a;
-  font-weight: 600;
-}
-/* --- Rustic Button --- */
-.rustic-btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 35px;
-  background-color: transparent;
-  border: 1px solid #4a403a;
-  color: #4a403a;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 10;
-}
-
-.rustic-btn:hover {
-  background-color: #4a403a;
-  color: #fdfbf7;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .rustic-card {
-    padding: 40px 20px;
-    width: 95%;
-  }
-  .rustic-title {
-    font-size: 28px;
-  }
-  .rustic-body p {
-    font-size: 18px;
-  }
-}
-.close-button {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  background: #434343;
-  font-size: 36px;
-  color: var(--secondary-color);
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  line-height: 1;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-button:hover {
-  color: #C98C55;
-  transform: rotate(90deg);
-}
-
-.close-buttonn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #2a2a2a;
-  font-size: 36px;
-  color: var(--secondary-color);
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  line-height: 1;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-buttonn:hover {
-  color: var(--secondary-color);
-  transform:scale(1.2);
-}
+.close-button, .close-buttonn { position: absolute; font-size: 36px; color: var(--secondary-color); cursor: pointer; transition: all var(--transition-speed) ease; line-height: 1; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+.close-button { top: 30px; right: 30px; background: #434343; }
+.close-button:hover { color: #C98C55; transform: rotate(90deg); }
+.close-buttonn { top: 15px; right: 15px; background: #2a2a2a; }
+.close-buttonn:hover { color: var(--secondary-color); transform: scale(1.2); }
 
 
+/* ===== PROGRESS METRICS ===== */
 
-/* ===== PROGRESS BAR ===== */
-
-.progress-bar {
-  position: fixed;
-  top: 69px;
-  right: 50px;
-  z-index: 9998; /* Below back button, above scaled container */
-}
-
-.circular-progress {
-  position: relative;
-  width: 140px;
-  height: 140px;
-}
-
-.circular-progress svg {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
-
-.progress-circle-bg {
-  fill: none;
-  stroke: var(--light-bg);
-  stroke-width: 10;
-}
-
-.progress-circle-fill {
-  fill: none;
-  stroke: var(--primary-color);
-  stroke-width: 10;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.5s ease;
-  filter: drop-shadow(0 0 8px rgba(139, 115, 85, 0.6));
-}
-.progress-text {
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.progress-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.8;
-}
-
-/* ===== CONTACT SECTION ===== */
-
-.contact {
-  background: var(--light-bg);
-  padding: 40px;
-  border-radius: 8px;
-}
-
-.contact h2 {
-  font-size: 32px;
-  color: #dbc7ae;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
-}
-
-.contact-card {
-  padding: 25px;
-  background: var(--dark-bg);
-  border: 2px solid var(--primary-color);
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  transition: all var(--transition-speed) ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.contact-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(139, 115, 85, 0.3);
-  border-color: #c49e7d;
-  background: rgba(196, 158, 125, 0.05);
-}
-
-.contact-card p {
-  color: #a0826d;
-  font-size: 14px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.contact-card h3 {
-  color: var(--secondary-color);
-  font-size: 16px;
-  margin: 0;
-  word-break: keep-all;
-}
-/* ===== CHECKLIST MODAL ===== */
-
-.checklist-items {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 30px 0;
-}
-
-.checklist-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 15px;
-  background: var(--dark-bg);
-  border: 2px solid rgba(139, 115, 85, 0.3);
-  border-radius: 4px;
-  transition: all var(--transition-speed) ease;
-}
-
-.checklist-item.discovered {
-  border-color: var(--primary-color);
-  background: rgba(139, 115, 85, 0.2);
-  box-shadow: 0 0 10px rgba(139, 115, 85, 0.3);
-}
-
-.item-icon {
-  font-size: 24px;
-}
-
-.item-name {
-  flex: 1;
-  color: var(--text-light);
-  font-family: 'Courier New', monospace;
-  font-size: 16px;
-  text-align: left;
-}
-
-.item-status {
-  font-size: 24px;
-  color: var(--primary-color);
-}
+.progress-bar { position: fixed; top: 69px; right: 50px; z-index: 9998; }
+.circular-progress { position: relative; width: 140px; height: 140px; }
+.circular-progress svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.progress-circle-bg { fill: none; stroke: var(--light-bg); stroke-width: 10; }
+.progress-circle-fill { fill: none; stroke: var(--primary-color); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; filter: drop-shadow(0 0 8px rgba(139, 115, 85, 0.6)); }
+.progress-text { font-size: 18px; font-weight: bold; line-height: 1; }
+.progress-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
 
 
-.checklist-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90px;
-  height: 90px;
-  background: rgba(26, 26, 26, 0.95);
-  color: var(--secondary-color);
-  border: 3px solid var(--primary-color);
-  border-radius: 50%;
-  cursor: pointer;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  font-weight: bold;
-  transition: all var(--transition-speed) ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
+/* ===== CONTACT ROUTING MODULE ===== */
 
-.checklist-button:hover {
-  background: var(--primary-color);
-  color: var(--text-dark);
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 0 25px var(--glow-color);
-}
-
-.checklist-footer {
-  text-align: center;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid var(--primary-color);
-  color: var(--secondary-color);
-  font-size: 18px;
-  font-weight: bold;
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+.contact { background: var(--light-bg); padding: 40px; border-radius: 8px; }
+.contact h2 { font-size: 32px; color: #dbc7ae; margin-bottom: 30px; padding-bottom: 10px; }
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 30px; }
+.contact-card { padding: 25px; background: var(--dark-bg); border: 2px solid var(--primary-color); border-radius: 8px; text-decoration: none; color: inherit; transition: all var(--transition-speed) ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.contact-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(139, 115, 85, 0.3); border-color: #c49e7d; background: rgba(196, 158, 125, 0.05); }
+.contact-card p { color: #a0826d; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.contact-card h3 { color: var(--secondary-color); font-size: 16px; margin: 0; word-break: keep-all; }
 
 
-/* ===== CHECKLIST MODAL CARD ===== */
+/* ===== CHECKLIST INTERACTIVE MATRIX ===== */
 
-.checklist-modal {
-  position: relative;
-  width: 500px;
-  max-width: 90%;
-  max-height: 85vh;
-  overflow-y: auto;
-  
-  background-color: var(--light-bg);
-  color: var(--text-light);
-  padding: 40px;
-  
-  /* Dark theme shadow */
-  box-shadow: 
-      0 20px 50px rgba(0,0,0,0.8), 
-      0 0 0 2px var(--primary-color);
-  
-  border-radius: 8px;
-  border: 3px solid var(--primary-color);
-  
-  text-align: center;
-  animation: slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Smooth scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) var(--dark-bg);
-}
+.checklist-items { display: flex; flex-direction: column; gap: 15px; margin: 30px 0; }
+.checklist-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--dark-bg); border: 2px solid rgba(139, 115, 85, 0.3); border-radius: 4px; transition: all var(--transition-speed) ease; }
+.checklist-item.discovered { border-color: var(--primary-color); background: rgba(139, 115, 85, 0.2); box-shadow: 0 0 10px rgba(139, 115, 85, 0.3); }
+.item-icon { font-size: 24px; }
+.item-name { flex: 1; color: var(--text-light); font-size: 16px; text-align: left; }
+.item-status { font-size: 24px; color: var(--primary-color); }
 
-/* Webkit scrollbar styling */
-.checklist-modal::-webkit-scrollbar {
-  width: 3px;
-}
-.checklist-modal::-webkit-scrollbar-track {
-  background: var(--dark-bg);
-}
-.checklist-modal::-webkit-scrollbar-thumb {
-  background-color: var(--primary-color);
-  border-radius: 1px;
-}
+.checklist-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; background: rgba(26, 26, 26, 0.95); color: var(--secondary-color); border: 3px solid var(--primary-color); border-radius: 50%; cursor: pointer; font-size: 14px; font-weight: bold; transition: all var(--transition-speed) ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+.checklist-button:hover { background: var(--primary-color); color: var(--text-dark); transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 25px var(--glow-color); }
+.checklist-footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--primary-color); color: var(--secondary-color); font-size: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
-.checklist-modal h2 {
-  font-family: 'Courier New', monospace;
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  line-height: 1.1;
-  color: var(--secondary-color);
-}
+.checklist-modal { position: relative; width: 500px; max-width: 90%; max-height: 85vh; overflow-y: auto; background-color: var(--light-bg); color: var(--text-light); padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 0 2px var(--primary-color); border-radius: 8px; border: 3px solid var(--primary-color); text-align: center; animation: slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1); scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--dark-bg); }
+.checklist-modal::-webkit-scrollbar { width: 3px; }
+.checklist-modal::-webkit-scrollbar-track { background: var(--dark-bg); }
+.checklist-modal::-webkit-scrollbar-thumb { background-color: var(--primary-color); }
+.checklist-modal h2 { font-size: 32px; font-weight: 600; margin-bottom: 15px; color: var(--secondary-color); }
 
-/* ===== RESPONSIVE DESIGN ===== */
+.info-card-button { padding: 10px 20px; background: var(--light-bg); color: var(--text-light); border: 2px solid var(--primary-color); border-radius: 4px; cursor: pointer; font-size: 16px; z-index: 9999; width: 230px; transition: all var(--transition-speed) ease; }
+.info-card-button:hover { background: var(--primary-color); transform: translateY(-2px); box-shadow: 0 0 15px var(--glow-color); }
+
+
+/* ===== GLOBAL INTERIOR PORTFOLIO MEDIA QUERIES ===== */
 
 @media (max-width: 768px) {
   :root {
@@ -1142,68 +986,154 @@ body {
     --cork-element-font-size: 16px;
     --cork-element-padding: 15px 20px;
   }
-
-  .recruiter-mode {
-    margin: 60px 20px 20px;
-    padding: 20px;
-  }
-
-  .checklist-modal {
-    padding: 30px 20px;
-    max-width: 500px;
-    width: 90%;
-  }
-
-  .progress-bar {
-    top: 60px;
-    right: 10px;
-  }
-
-  .circular-progress {
-    width: 100px;
-    height: 100px;
-  }
-
-  .checklist-button {
-    width: 65px;
-    height: 65px;
-    font-size: 12px;
-  }
-
-  .progress-text {
-    font-size: 14px;
-  }
-
-  .progress-label {
-    font-size: 8px;
-  }
+  .recruiter-mode { margin: 60px 20px 20px; padding: 20px; }
+  .checklist-modal { padding: 30px 20px; max-width: 500px; width: 90%; }
+  .progress-bar { top: 60px; right: 10px; }
+  .circular-progress { width: 100px; height: 100px; }
+  .checklist-button { width: 65px; height: 65px; font-size: 12px; }
+  .progress-text { font-size: 14px; }
+  .progress-label { font-size: 8px; }
 }
 
-/* Very small screens - allow slight overflow with scroll if needed */
 @media (max-width: 600px) {
-  .leisure-mode-wrapper {
-    overflow: auto;
-  }
+  .leisure-mode-wrapper { overflow: auto; }
+  .rustic-card { padding: 40px 20px; width: 95%; }
+  .rustic-title { font-size: 28px; }
+  .rustic-body p { font-size: 18px; }
 }
 
-.info-card-button {
-   
-  padding: 10px 20px;
-  background: var(--light-bg);
-  color: var(--text-light);
-  border: 2px solid var(--primary-color);
-  border-radius: 4px;
-  cursor: pointer;
+
+/* Inline Accent Rules */
+.orange-accent {
+  color: #e64a19 !important;
+}
+
+.orange-tick {
+  border-color: #e64a19 !important;
+}
+
+/* Corrected Blueprint Action Button */
+.blueprint-action-trigger {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #222;
+  padding: 14px 20px;
+  width: 100%;
+  max-width: 420px;
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.trigger-text {
   font-family: 'Courier New', monospace;
-  font-size: 16px;
-  z-index: 9999; /* Above the scaled container */
-  width: 230px;
-  transition: all var(--transition-speed) ease;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #222;
 }
 
+/* Adjusted Arrow Constraints */
+.action-arrow {
+  font-size: 32px; 
+  font-weight: 900;
+  color: #e64a19;
+  line-height: 1;
+  margin-top: 0; 
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
 
-.info-card-button:hover {
-  background: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px var(--glow-color);
+/* Dynamic Hover States for the Corrected Layout */
+.blueprint-pane:hover .blueprint-action-trigger {
+  background-color: #222;
+  border-color: #222;
+  box-shadow: 8px 8px 0 rgba(230, 74, 25, 0.2);
+}
+
+.blueprint-pane:hover .trigger-text {
+  color: #dcdcdc;
+}
+
+.blueprint-pane:hover .action-arrow {
+  transform: translate(4px, 4px);
+}
+
+/* ==========================================================================
+   PURE CSS MAGNIFYING LENS & COMPASS CURSOR
+   ========================================================================== */
+
+/* Hide default cursor only within the active workspace panels */
+.split-view-container,
+.blueprint-pane,
+.artifact-pane {
+  cursor: none !important;
+}
+
+/* Base Lens Shell */
+.css-lens-cursor {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  pointer-events: none; /* Allows click logic to pass through flawlessly */
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+  opacity: 0; /* Hidden by default when mouse is up in the HUD bar */
+}
+
+/* Core Target Center Dot */
+.lens-center-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+/* Compass Diagonal Handle Line */
+.lens-compass-handle {
+  position: absolute;
+  width: 2px;
+  height: 12px;
+  bottom: -10px;
+  right: -2px;
+  transform: rotate(-45deg);
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  opacity: 0;
+}
+
+/* ==========================================================================
+   DYNAMIC REALM STATE SHIFTS
+   ========================================================================== */
+
+/* STATE 1: Hovering over the Technical Blueprint Panel */
+.css-lens-cursor.blueprint {
+  opacity: 1;
+  border: 2px solid #e64a19; /* High-precision technical orange */
+  background-color: rgba(230, 74, 25, 0.05); /* Soft technical tint */
+}
+.css-lens-cursor.blueprint .lens-center-dot {
+  background-color: #e64a19;
+}
+.css-lens-cursor.blueprint .lens-compass-handle {
+  opacity: 0; /* Hidden on the technical side to look like a clean crosshair scope */
+}
+
+/* STATE 2: Hovering over the Leisure Artifact Scroll Panel */
+.css-lens-cursor.artifact {
+  opacity: 1;
+  border: 2px solid #2b1810; /* Dark parchment tone matching scroll borders */
+  background-color: rgba(230, 204, 178, 0.2); /* Injected vintage magnifying lens glass tint */
+  transform: translate(-50%, -50%) scale(1.15); /* Expands slightly to mimic a magnifying glass */
+}
+.css-lens-cursor.artifact .lens-center-dot {
+  background-color: #dd4d1086;
+}
+.css-lens-cursor.artifact .lens-compass-handle {
+  opacity: 1;
+  background-color: #9b593d; /* Shows the handle line, completing the magnifying glass/compass design */
 }
